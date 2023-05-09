@@ -187,6 +187,8 @@ public final class XPCListener {
         }
     }
 
+    public var newConnectionHandler: ((XPCConnection) -> Void)?
+
     /// Create a new `XPCListener`.
     ///
     /// - Parameters:
@@ -222,6 +224,8 @@ public final class XPCListener {
                     }
 
                     let newConnection = try XPCConnection(connection: $0, codeSigningRequirement: requirement)
+
+                    self?.newConnectionHandler?(newConnection)
 
                     newConnection.messageHandlers = self?.messageHandlers ?? [:]
                     newConnection.errorHandler = self?.errorHandler
